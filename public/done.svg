@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -20 140 140" width="140" height="140" role="img" aria-label="完了" style="color:#316745">
+  <style>
+    /* ① 後ろの輪：広がりながら消える */
+    .ring {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 3;
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: ring 0.7s ease-out 0.25s forwards;
+    }
+    @keyframes ring {
+      0%   { transform: scale(0.5); opacity: 0.6; }
+      100% { transform: scale(1.15); opacity: 0; }
+    }
+
+    /* ② 手：ひねりながら飛び出して、少し行き過ぎてから戻る */
+    .hand {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      transform: scale(0);
+      animation: pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes pop {
+      0%   { transform: scale(0) rotate(-30deg); }
+      60%  { transform: scale(1.08) rotate(8deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    /* ③ 光の線：外へ飛び出して消える */
+    .ray {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: ray 0.5s ease-out 0.35s forwards;
+    }
+    @keyframes ray {
+      0%   { stroke-dashoffset: 1; }
+      50%  { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hand { animation: none; transform: none; }
+      .ring, .ray { display: none; }
+    }
+  </style>
+
+  <circle class="ring" cx="50" cy="50" r="62" />
+
+  <!-- 光の線：同じ線を 45 度ずつ回して 8 本 -->
+  <g>
+    <path class="ray" d="M50 -4 V-14" pathLength="1" />
+    <path class="ray" d="M50 -4 V-14" pathLength="1" transform="rotate(45 50 50)" />
+    <path class="ray" d="M50 -4 V-14" pathLength="1" transform="rotate(90 50 50)" />
+    <path class="ray" d="M50 -4 V-14" pathLength="1" transform="rotate(135 50 50)" />
+    <path class="ray" d="M50 -4 V-14" pathLength="1" transform="rotate(180 50 50)" />
+    <path class="ray" d="M50 -4 V-14" pathLength="1" transform="rotate(225 50 50)" />
+    <path class="ray" d="M50 -4 V-14" pathLength="1" transform="rotate(270 50 50)" />
+    <path class="ray" d="M50 -4 V-14" pathLength="1" transform="rotate(315 50 50)" />
+  </g>
+
+  <!-- グッドの手 -->
+  <g class="hand">
+    <!-- 袖口 -->
+    <rect x="18" y="46" width="12" height="38" rx="3" fill="currentColor" />
+    <!-- 親指とこぶし -->
+    <path
+      d="M34 82 V48 L39 24 Q40 15 47 15 Q55 15 55 24 V42 H71 Q79 42 79 50 V75 Q79 82 72 82 Z"
+      fill="currentColor"
+    />
+    <!-- 指の区切り -->
+    <path d="M58 52 H79 M58 62 H79 M58 72 H79" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none" />
+  </g>
+</svg>

@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* 千歳緑をアクセントカラーとして登録（bg-chitose、text-chitose などで使える） */
+@theme {
+  --color-chitose: #316745;
+  --color-chitose-dark: #26513a;
+  --color-chitose-light: #e8f0eb;
+}

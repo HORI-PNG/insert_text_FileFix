@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/done.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Fix</title>
+  </head>
+  <!-- lg 以上（パソコン）では画面の高さぴったり。ページ全体はスクロールさせない -->
+  <body class="bg-[#f5f5f7] font-sans text-[#1d1d1f] antialiased lg:h-dvh lg:overflow-hidden">
+    <div id="app" class="flex min-h-dvh flex-col lg:h-full lg:min-h-0">
+      <!-- ナビゲーションバー -->
+      <nav class="shrink-0 border-b border-black/5 bg-white/70 backdrop-blur-xl">
+        <div class="mx-auto flex h-12 max-w-6xl items-center justify-between px-4">
+          <span class="text-sm font-semibold tracking-tight">File Fix</span>
+          <span class="text-xs text-[#86868b]">一行上に、ぴったり。</span>
+        </div>
+      </nav>
+
+      <!-- 非対応ブラウザの帯（ER-06） -->
+      <p id="unsupported" hidden class="shrink-0 bg-[#f4efe6] px-4 py-2 text-center text-sm text-[#7a5a2a]">
+        このブラウザは対象外です。【対象】Chrome または Edge
+      </p>
+
+      <main class="mx-auto grid w-full max-w-6xl flex-1 gap-5 px-4 py-5 lg:min-h-0 lg:grid-cols-[1.15fr_1fr]">
+        <!-- 左：入力カード（長くなったらこの中だけスクロール） -->
+        <section class="flex flex-col gap-6 rounded-[28px] bg-white p-6 shadow-[0_4px_30px_rgba(0,0,0,0.05)] lg:min-h-0 lg:overflow-y-auto">
+          <!-- 01 何を処理する？ -->
+          <div class="space-y-3">
+            <h2 class="text-lg font-semibold tracking-tight"><span class="mr-2 text-[#86868b]">01</span>何を処理する？</h2>
+            <div class="flex flex-wrap items-center gap-3">
+              <button
+                id="pick-file-btn"
+                class="rounded-full bg-black/5 px-5 py-2 text-[15px] font-medium transition hover:bg-black/10 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                ファイルを選ぶ
+              </button>
+              <button
+                id="pick-folder-btn"
+                class="rounded-full bg-black/5 px-5 py-2 text-[15px] font-medium transition hover:bg-black/10 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                フォルダを選ぶ
+              </button>
+            </div>
+            <p id="source-name" class="truncate text-sm text-[#86868b]">未選択</p>
+
+            <!-- フォルダを選んだときだけ表示 -->
+            <div id="folder-options" hidden class="space-y-4 rounded-2xl bg-[#f5f5f7] p-4">
+              <div class="space-y-2">
+                <p class="text-sm font-medium text-[#424245]">対象の拡張子</p>
+                <div id="ext-list" class="flex flex-wrap gap-2">
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".ts" checked class="sr-only" />.ts</label>
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".tsx" checked class="sr-only" />.tsx</label>
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".js" checked class="sr-only" />.js</label>
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".jsx" checked class="sr-only" />.jsx</label>
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".py" checked class="sr-only" />.py</label>
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".java" checked class="sr-only" />.java</label>
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".txt" class="sr-only" />.txt</label>
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".html" class="sr-only" />.html</label>
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".css" class="sr-only" />.css</label>
+                  <label class="cursor-pointer rounded-full border border-black/10 bg-white px-3 py-1 font-mono text-xs transition has-checked:border-chitose has-checked:bg-chitose has-checked:text-white"><input type="checkbox" value=".md" class="sr-only" />.md</label>
+                </div>
+                <input
+                  id="ext-custom"
+                  type="text"
+                  placeholder="その他の拡張子（例: .go, .rs）"
+                  class="w-full rounded-xl border border-transparent bg-white px-3 py-2 font-mono text-sm placeholder:font-sans placeholder:text-[#86868b] focus:border-chitose focus:ring-4 focus:ring-chitose/15 focus:outline-none"
+                />
+              </div>
+              <div class="space-y-2">
+                <label for="exclude-input" class="block text-sm font-medium text-[#424245]">除外するフォルダ（カンマ区切り）</label>
+                <input
+                  id="exclude-input"
+                  type="text"
+                  value="node_modules, .git, dist, build, .venv, venv, __pycache__"
+                  class="w-full rounded-xl border border-transparent bg-white px-3 py-2 font-mono text-sm focus:border-chitose focus:ring-4 focus:ring-chitose/15 focus:outline-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- 02 検索と挿入の組 -->
+          <div class="space-y-3">
+            <h2 class="text-lg font-semibold tracking-tight"><span class="mr-2 text-[#86868b]">02</span>何を探して、何を入れる？</h2>
+            <div id="rules" class="space-y-3"></div>
+            <button
+              id="add-rule-btn"
+              class="w-full rounded-2xl border border-dashed border-black/15 py-2.5 text-sm font-medium text-chitose transition hover:border-chitose hover:bg-chitose-light"
+            >
+              ＋ 組を追加
+            </button>
+          </div>
+
+          <!-- 03 出力先 -->
+          <div class="space-y-3">
+            <h2 class="text-lg font-semibold tracking-tight"><span class="mr-2 text-[#86868b]">03</span>どこに保存する？</h2>
+            <div class="flex flex-wrap items-center gap-3">
+              <button
+                id="pick-output-btn"
+                class="rounded-full bg-black/5 px-5 py-2 text-[15px] font-medium transition hover:bg-black/10 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                出力先を選ぶ
+              </button>
+              <span id="output-name" class="truncate text-sm text-[#86868b]">未選択</span>
+            </div>
+            <p class="text-xs leading-relaxed text-[#86868b]">
+              ファイル名は「元の名前_fix.拡張子」になります。<br />
+              ホームフォルダやドライブ直下は選べません。専用のフォルダを作って選んでください。<br />
+              WSL のフォルダは、WSL の中の Chrome で開いたときだけ選べます。
+            </p>
+          </div>
+        </section>
+
+        <!-- 右：結果カード -->
+        <section class="flex min-h-96 flex-col gap-4 rounded-[28px] bg-white p-6 shadow-[0_4px_30px_rgba(0,0,0,0.05)] lg:min-h-0">
+          <h2 class="text-lg font-semibold tracking-tight"><span class="mr-2 text-[#86868b]">04</span>結果</h2>
+
+          <!-- 結果パネル：4つの状態を切り替える -->
+          <div class="min-h-0 flex-1 overflow-y-auto rounded-2xl bg-[#f5f5f7] p-5">
+            <!-- 起動直後：使い方 -->
+            <div id="panel-help" class="space-y-3 text-sm leading-relaxed text-[#424245]">
+              <p class="font-semibold text-[#1d1d1f]">使い方</p>
+              <ol class="list-decimal space-y-1 pl-5">
+                <li>処理するファイル、またはフォルダを選びます。</li>
+                <li>探す文字列と、その一行上に入れる文字列を入力します。「＋ 組を追加」で増やせます。</li>
+                <li>保存先のフォルダを選びます。</li>
+                <li>「挿入開始」を押すと、挿入して保存します。</li>
+              </ol>
+              <p class="text-xs text-[#86868b]">インデントは、見つかった行に自動でそろえます。元のファイルは変更しません。</p>
+            </div>
+
+            <!-- 選択後：対象ファイル一覧 -->
+            <div id="panel-files" hidden class="space-y-3">
+              <p id="files-count" class="text-sm font-semibold"></p>
+              <ul id="file-list" class="space-y-1 font-mono text-xs text-[#424245]"></ul>
+            </div>
+
+            <!-- 処理中 -->
+            <div id="panel-loading" hidden class="flex h-full flex-col items-center justify-center gap-3 py-10">
+              <img src="/loading.svg" alt="" class="w-28" />
+              <p class="text-sm text-[#6e6e73]">処理しています…</p>
+            </div>
+
+            <!-- 完了 -->
+            <div id="panel-done" hidden class="space-y-4">
+              <div class="flex flex-col items-center gap-1">
+                <img id="done-img" src="/done.svg" alt="" class="w-28" />
+                <p id="summary" class="text-center text-sm font-semibold"></p>
+              </div>
+              <ul id="saved-list" class="space-y-1.5 text-xs"></ul>
+              <p class="text-center text-xs text-[#86868b]">この履歴は、ブラウザのリロード時に削除されます</p>
+            </div>
+          </div>
+
+          <p id="message" class="min-h-5 text-sm font-medium text-[#a1453a]"></p>
+          <button
+            id="start-btn"
+            disabled
+            class="w-full rounded-full bg-chitose py-3 text-base font-semibold text-white transition hover:bg-chitose-dark active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-chitose"
+          >
+            挿入開始
+          </button>
+        </section>
+      </main>
+    </div>
+
+    <!-- 検索と挿入の「組」1つ分のひな形。main.ts で複製して使う -->
+    <template id="rule-template">
+      <div class="rule space-y-2 rounded-2xl bg-[#f5f5f7] p-4">
+        <div class="flex items-center justify-between">
+          <span class="rule-no text-xs font-semibold text-[#86868b]">組 1</span>
+          <button
+            type="button"
+            class="rule-remove rounded-full px-2 text-lg leading-none text-[#86868b] transition hover:bg-black/5 hover:text-[#1d1d1f] disabled:invisible"
+            aria-label="この組を削除"
+          >
+            ×
+          </button>
+        </div>
+        <input
+          type="text"
+          placeholder="検索文字列（例: return）"
+          class="rule-search w-full rounded-xl border border-transparent bg-white px-3 py-2 text-[15px] placeholder:text-[#86868b] focus:border-chitose focus:ring-4 focus:ring-chitose/15 focus:outline-none"
+        />
+        <textarea
+          rows="2"
+          placeholder="挿入文字列（空なら空行を挿入）"
+          class="rule-insert w-full resize-y rounded-xl border border-transparent bg-white px-3 py-2 font-mono text-sm placeholder:font-sans placeholder:text-[#86868b] focus:border-chitose focus:ring-4 focus:ring-chitose/15 focus:outline-none"
+        ></textarea>
+      </div>
+    </template>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

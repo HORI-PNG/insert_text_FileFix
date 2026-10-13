@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" width="120" height="40" role="img" aria-label="処理中" style="color:#316745">
+  <style>
+    circle {
+      fill: currentColor;
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+    circle:nth-of-type(2) { animation-delay: 0.16s; }
+    circle:nth-of-type(3) { animation-delay: 0.32s; }
+
+    /* 1つずつ、大きくなって小さく戻る */
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.5); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    /* 「動きを減らす」設定の人には止めて表示 */
+    @media (prefers-reduced-motion: reduce) {
+      circle { animation: none; transform: scale(0.75); }
+    }
+  </style>
+  <circle cx="20" cy="20" r="9" />
+  <circle cx="60" cy="20" r="9" />
+  <circle cx="100" cy="20" r="9" />
+</svg>
