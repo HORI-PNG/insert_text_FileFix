@@ -16,8 +16,9 @@
 | 目的     | ファイル（またはフォルダ内の全ファイル）で、検索文字列を含む行の一行上に、同じインデントで任意の文字列を挿入し、別ファイルとして保存する |
 | 利用者   | 自分のみ                                                                                         |
 | 利用環境 | Chrome / Edge の最新版。WSL（Ubuntu）上のファイルを扱うときは、**WSL の中の Chrome（WSLg）**で開く（Windows の Chrome / Edge では `\\wsl.localhost\...` のフォルダを選べないため） |
-| 起動方法 | ターミナル1：`cd ~/insert_text_FileFix && npm run dev` ／ ターミナル2：`google-chrome http://localhost:5173` |
-| 形態     | ブラウザだけで動く Web アプリ。サーバーなし                                                      |
+| 起動方法 | デスクトップのショートカット「File Fix」をダブルクリック。リンク先：`"C:\Program Files\WSL\wslg.exe" -d Ubuntu -- google-chrome https://insert-text-file-fix.vercel.app` |
+| 開発時   | ターミナル1：`cd ~/insert_text_FileFix && npm run dev` ／ ターミナル2：`google-chrome http://localhost:5173` |
+| 形態     | ブラウザだけで動く Web アプリ。サーバーなし。Vercel で公開（https://insert-text-file-fix.vercel.app） |
 
 ## 2. スコープ
 
@@ -153,6 +154,7 @@
 | ファイル構成 | `src/logic.ts`：挿入ロジック（DOM に触れない） / `src/main.ts`：画面の操作 |
 | 方針         | ロジックと画面操作を分ける。部品の取得は `getEl()` を使う                  |
 | アニメーション | `public/loading.svg`、`public/done.svg`（作成済み）                      |
+| 公開         | Vercel（GitHub `HORI-PNG/insert_text_FileFix` の `main` に push すると自動で再公開） |
 
 ---
 
@@ -223,3 +225,4 @@
 | 2026-10-13 | 質問 Q-01〜Q-26 を追加（Claude）                             |
 | 2026-10-13 | 回答をもとに v1.0 確定版に整理。FR を入力・検索・出力・実行に分けて番号を振り直し（Claude） |
 | 2026-10-13 | 利用環境に WSL の中の Chrome（WSLg）と起動方法を追記。画面に選べないフォルダの注意書きを追加（Claude） |
+| 2026-10-13 | Vercel での公開に合わせて、起動方法をデスクトップのショートカットに変更。開発時の起動方法を分けて記載（Claude） |
